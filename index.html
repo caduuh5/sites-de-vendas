@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StepUp Sneakers</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>StepUp Sneakers</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#produtos">Produtos</a></li>
+                <li><a href="#contato">Contato</a></li>
+                <li><a href="#cart" id="cart-link">Carrinho (<span id="cart-count">0</span>)</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="produtos">
+            <h2>Nosso Catálogo</h2>
+            <div class="produtos-container">
+                <div class="produto">
+                    <img src="nike-shoes.jpg" alt="Nike Air Max">
+                    <h3>Nike Air Max</h3>
+                    <p>Preço: R$ 499,99</p>
+                    <button class="add-to-cart" data-id="1" data-name="Nike Air Max" data-price="499.99">Adicionar ao Carrinho</button>
+                </div>
+
+                <div class="produto">
+                    <img src="puma-shoes.jpg" alt="Puma Suede">
+                    <h3>Puma Suede</h3>
+                    <p>Preço: R$ 399,99</p>
+                    <button class="add-to-cart" data-id="2" data-name="Puma Suede" data-price="399.99">Adicionar ao Carrinho</button>
+                </div>
+
+                <div class="produto">
+                    <img src="adidas-shoes.jpg" alt="Adidas Ultraboost">
+                    <h3>Adidas Ultraboost</h3>
+                    <p>Preço: R$ 799,99</p>
+                    <button class="add-to-cart" data-id="3" data-name="Adidas Ultraboost" data-price="799.99">Adicionar ao Carrinho</button>
+                </div>
+
+                <div class="produto">
+                    <img src="jordan-shoes.jpg" alt="Air Jordan 1">
+                    <h3>Air Jordan 1</h3>
+                    <p>Preço: R$ 799,99</p>
+                    <button class="add-to-cart" data-id="4" data-name="Air Jordan 1" data-price="799.99">Adicionar ao Carrinho</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="cart">
+            <h2>Carrinho</h2>
+            <div id="cart-items">
+                <p>Carrinho vazio.</p>
+            </div>
+            <div id="cart-total">
+                <h3>Total: R$ <span id="total-price">0.00</span></h3>
+                <button id="checkout">Finalizar Compra</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 StepUp Sneakers - Todos os direitos reservados</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
