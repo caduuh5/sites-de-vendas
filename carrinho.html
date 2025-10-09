@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Loja de Tênis</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Sneaker Store</h1>
+        <button id="open-cart-btn">
+            🛒 Carrinho (<span id="cart-count">0</span>)
+        </button>
+    </header>
+
+    <main>
+        <h2>Nossos Tênis</h2>
+        <section id="products-list">
+            </section>
+    </main>
+
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h3>Seu Carrinho</h3>
+            <ul id="cart-items">
+                </ul>
+            <p>Total: R$ <span id="cart-total">0.00</span></p>
+            <button id="checkout-btn">Finalizar Compra</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
