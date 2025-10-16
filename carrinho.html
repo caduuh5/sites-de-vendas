@@ -35,3 +35,208 @@
     <script src="script.js"></script>
 </body>
 </html>
+<div id="cart-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h3>Seu Carrinho</h3>
+        
+        <div class="cart-header">
+            <span>Produto</span>
+            <span>Qtd</span>
+            <span>Preço</span>
+            <span>Ações</span>
+        </div>
+        
+        <ul id="cart-items">
+            </ul>
+        <p>Total: R$ <span id="cart-total">0.00</span></p>
+        <button id="checkout-btn">Finalizar Compra</button>
+    </div>
+</div>
+}// Catálogo de produtos (Simulação de um banco de dados)
+const products = [
+    { id: 1, name: "Tênis Runner Pro", price: 299.90, image: "images/runner.jpg" },
+    { id: 2, name: "Sneaker Casual X", price: 189.50, image: "images/casual.jpg" },
+    { id: 3, name: "Bota Trail Max", price: 349.00, image: "images/trail.jpg" }
+    // Adicione mais produtos aqui
+];
+
+let cart = []; // Array para armazenar os itens no carrinho
+
+// --- Inicialização ---
+document.addEventListener('DOMContentLoaded', () => {
+    loadCartFromLocalStorage();
+    renderProducts();
+    setupModalEvents();
+});
+
+// --- Lógica do LocalStorage ---
+
+function saveCartToLocalStorage() {
+    localStorage.setItem('tenisCart', JSON.stringify(cart));
+}
+
+function loadCartFromLocalStorage() {
+    const storedCart = localStorage.getItem('tenisCart');
+    if (storedCart) {
+        cart = JSON.parse(storedCart);
+        updateCartDisplay(); // Atualiza a contagem no ícone
+    }
+}
+
+// --- Funções de Ação do Carrinho ---
+
+function addToCart(productId) {
+    const product = products.find(p => p.id === productId);
+    const cartItem = cart.find(item => item.id === productId);
+
+    if (product) {
+        if (cartItem) {
+            cartItem.quantity += 1;
+        } else {
+            cart.push({ ...product, quantity: 1 });
+        }
+        
+        saveCartToLocalStorage();
+        updateCartDisplay();
+        renderCartItems(); // Garante que o modal aberto seja atualizado
+    }
+}
+
+function updateItemQuantity(productId, change) {
+    const cartItem = cart.find(item => item.id === productId);
+    
+    if (cartItem) {
+        cartItem.quantity += change;
+        
+        if (cartItem.quantity <= 0) {
+            // Remove o item se a quantidade chegar a zero
+            cart = cart.filter(item => item.id !== productId);
+        }
+        
+        saveCartToLocalStorage();
+        updateCartDisplay();
+        renderCartItems(); // Recarrega a lista para mostrar as novas quantidades/total
+    }
+}
+
+// --- Funções de Renderização (Listar na Loja) ---
+
+function renderProducts() {
+    const productsList = document.getElementById('products-list');
+    productsList.innerHTML = '';
+
+    products.forEach(product => {
+        const productCard = document.createElement('div');
+        productCard.className = 'product-card';
+        productCard.innerHTML = `
+            <img src="https://via.placeholder.com/200x150?text=${product.name.replace(/\s/g, '+')}" alt="${product.name}">
+            <h3>${product.name}</h3>
+            <p>R$ ${product.price.toFixed(2)}</p>
+            <button class="add-to-cart-btn" data-id="${product.id}">Adicionar ao Carrinho</button>
+        `;
+        productsList.appendChild(productCard);
+    });
+
+    // Adiciona evento de clique a TODOS os botões "Adicionar"
+    document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+        button.addEventListener('click', (e) => {
+            const productId = parseInt(e.target.dataset.id);
+            addToCart(productId);
+        });
+    });
+}
+
+// --- Funções de Renderização (Modal do Carrinho) ---
+
+function renderCartItems() {
+    const cartItemsList = document.getElementById('cart-items');
+    const cartTotalElement = document.getElementById('cart-total');
+    let total = 0;
+
+    cartItemsList.innerHTML = ''; // Limpa a lista antes de renderizar
+
+    cart.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
+
+        const listItem = document.createElement('li');
+        listItem.className = 'cart-item';
+        listItem.innerHTML = `
+            <span class="item-name">${item.name}</span>
+            <div class="quantity-controls">
+                <button class="qty-btn" data-id="${item.id}" data-change="-1">-</button>
+                <span class="item-quantity">${item.quantity}</span>
+                <button class="qty-btn" data-id="${item.id}" data-change="1">+</button>
+            </div>
+            <span class="item-price">R$ ${itemTotal.toFixed(2)}</span>
+            <button class="remove-item-btn" data-id="${item.id}">X</button>
+        `;
+        cartItemsList.appendChild(listItem);
+    });
+
+    // Atualiza o total
+    cartTotalElement.textContent = total.toFixed(2);
+    
+    // Adiciona eventos aos botões de quantidade e remoção
+    document.querySelectorAll('.qty-btn').forEach(button => {
+        button.addEventListener('click', (e) => {
+            const productId = parseInt(e.target.dataset.id);
+            const change = parseInt(e.target.dataset.change);
+            updateItemQuantity(productId, change);
+        });
+    });
+    
+    document.querySelectorAll('.remove-item-btn').forEach(button => {
+        button.addEventListener('click', (e) => {
+            const productId = parseInt(e.target.dataset.id);
+            // Ao remover, chamamos a função de atualização com -999 para garantir a remoção
+            updateItemQuantity(productId, -999); 
+        });
+    });
+}
+
+function updateCartDisplay() {
+    // Atualiza apenas o contador no ícone da sacola
+    const cartCountElement = document.getElementById('cart-count');
+    cartCountElement.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+}
+
+
+// --- Funções do Modal ---
+
+function setupModalEvents() {
+    const modal = document.getElementById('cart-modal');
+    const openBtn = document.getElementById('open-cart-btn');
+    const closeBtn = document.querySelector('.close-btn');
+    const checkoutBtn = document.getElementById('checkout-btn');
+
+    openBtn.onclick = () => {
+        renderCartItems(); // Recarrega os itens SEMPRE que o modal é aberto
+        modal.style.display = 'block';
+    };
+
+    closeBtn.onclick = () => {
+        modal.style.display = 'none';
+    };
+
+    window.onclick = (event) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    };
+    
+    checkoutBtn.onclick = () => {
+        if (cart.length > 0) {
+            const total = document.getElementById('cart-total').textContent;
+            alert(`Obrigado por sua compra! Total: R$ ${total}.`);
+            cart = []; // Esvazia o carrinho
+            saveCartToLocalStorage();
+            updateCartDisplay();
+            renderCartItems();
+            modal.style.display = 'none';
+        } else {
+            alert("Seu carrinho está vazio!");
+        }
+    };
+}

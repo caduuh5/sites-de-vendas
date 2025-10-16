@@ -199,4 +199,3 @@ function setupModalEvents() {
             alert("Seu carrinho está vazio!");
         }
     };
-}

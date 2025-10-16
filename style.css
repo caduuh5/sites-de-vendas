@@ -189,4 +189,62 @@ main {
     padding: 5px 10px;
     cursor: pointer;
     border-radius: 4px;
+}/* --- Estilos do Carrinho --- */
+
+.cart-header {
+    display: grid;
+    grid-template-columns: 3fr 1fr 1fr 0.5fr; /* 4 colunas */
+    font-weight: bold;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+#cart-items {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.cart-item {
+    display: grid;
+    grid-template-columns: 3fr 1fr 1fr 0.5fr; /* Alinha com o header */
+    padding: 10px 0;
+    align-items: center;
+    border-bottom: 1px dashed #eee;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.qty-btn {
+    background-color: #f0f0f0;
+    color: #333;
+    border: 1px solid #ccc;
+    padding: 3px 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.remove-item-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    justify-self: end; /* Alinha o botão X para a direita */
+}
+
+.item-name, .item-price, .item-quantity {
+    text-align: center;
+}
+
+.item-name {
+    text-align: left;
 }
